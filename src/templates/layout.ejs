@@ -6,7 +6,11 @@
 
     <%- metaTagsHtml || '' %> <%# SEO Plugin Meta Tags %>
 
-    <title><%= pageTitle %> : <%= siteTitle %></title>
+    <% if (pageTitle === 'Home') { %>
+        <title><%= siteTitle %></title>
+    <% } else { %>
+        <title><%= pageTitle %> : <%= siteTitle %></title>
+    <% } %>
     <% if (description && !(metaTagsHtml && metaTagsHtml.includes('name="description"'))) { %>
       <meta name="description" content="<%= description %>">
     <% } %>

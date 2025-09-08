@@ -28,7 +28,13 @@ function generateSeoMetaTags(config, pageData, relativePathToRoot) {
   metaTagsHtml += `  <link rel="canonical" href="${canonicalUrl}">\n`;
 
   // Open Graph
-  metaTagsHtml += `  <meta property="og:title" content="${pageTitle} | ${siteTitle}">\n`;
+  if (pageTitle === 'Home') {
+    metaTagsHtml += `  <meta property="og:title" content="${siteTitle}">\n`;
+  }
+  else {
+    metaTagsHtml += `  <meta property="og:title" content="${pageTitle} | ${siteTitle}">\n`;
+  }
+
   metaTagsHtml += `  <meta property="og:description" content="${description}">\n`;
   metaTagsHtml += `  <meta property="og:url" content="${pageUrl}">\n`;
   metaTagsHtml += `  <meta property="og:site_name" content="${config.plugins?.seo?.openGraph?.siteName || siteTitle}">\n`;
