@@ -23,7 +23,7 @@ function initializeCollapsibleNav() {
     
     const isParentActive = item.classList.contains('active-parent');
     // Default to expanded if it's a parent of the active page, otherwise check stored state.
-    let isExpanded = isParentActive || (navStates[navId] === true);
+    let isExpanded = isParentActive; //|| (navStates[navId] === true);
 
     const toggleSubmenu = (expand) => {
       item.setAttribute('aria-expanded', expand);
