@@ -115,9 +115,11 @@
                 <!-- DEBUG: <%- JSON.stringify({headingsLength: headings ? headings.length : 0}) %> -->
                 
                 <!-- TOC sidebar -->
+                <% if (frontmatter.toc !== 'none') { %>
                 <div class="toc-sidebar">
                     <%- include('toc', { content, headings, navigationHtml, isActivePage }) %>
                 </div>
+                <% } %>
             </div>
         </main>
         <footer class="page-footer">
