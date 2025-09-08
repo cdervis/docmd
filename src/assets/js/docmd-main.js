@@ -77,29 +77,38 @@ function initializeSidebarScroll() {
   }, 10);
 }
 
-// --- Theme Toggle Logic ---
-function setupThemeToggleListener() {
-  const themeToggleButton = document.getElementById('theme-toggle-button');
+function applyTheme(theme, applyToBody) {
+    if (theme === null) {
+      return;
+    }
 
-  function applyTheme(theme) {
     document.documentElement.setAttribute('data-theme', theme);
-    document.body.setAttribute('data-theme', theme);
+
+    if (applyToBody) {
+      document.body.setAttribute('data-theme', theme);
+    }
+
     localStorage.setItem('docmd-theme', theme);
-    
+
     // Switch highlight.js theme
     const highlightThemeLink = document.getElementById('highlight-theme');
     if (highlightThemeLink) {
-      const newHref = highlightThemeLink.getAttribute('data-base-href') + `docmd-highlight-${theme}.css`;
-      highlightThemeLink.setAttribute('href', newHref);
+        const baseHref = highlightThemeLink.getAttribute('data-base-href');
+        const newHref = baseHref + `docmd-highlight-${theme}.css`;
+        highlightThemeLink.setAttribute('href', newHref);
     }
-  }
+}
+
+// --- Theme Toggle Logic ---
+function setupThemeToggleListener() {
+  const themeToggleButton = document.getElementById('theme-toggle-button');
 
   // Add click listener to the toggle button
   if (themeToggleButton) {
     themeToggleButton.addEventListener('click', () => {
       const currentTheme = document.documentElement.getAttribute('data-theme');
       const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-      applyTheme(newTheme);
+      applyTheme(newTheme, true);
     });
   }
 }
@@ -202,27 +211,13 @@ function initializeCopyCodeButtons() {
   });
 }
 
-// --- Theme Sync Function ---
-function syncBodyTheme() {
-  const currentTheme = document.documentElement.getAttribute('data-theme');
-  if (currentTheme && document.body) {
-    document.body.setAttribute('data-theme', currentTheme);
-  }
-  
-  // Also ensure highlight CSS matches the current theme
-  const highlightThemeLink = document.getElementById('highlight-theme');
-  if (highlightThemeLink && currentTheme) {
-    const baseHref = highlightThemeLink.getAttribute('data-base-href');
-    if (baseHref) {
-      const newHref = baseHref + `docmd-highlight-${currentTheme}.css`;
-      highlightThemeLink.setAttribute('href', newHref);
-    }
-  }
-}
-
 // --- Main Execution ---
 document.addEventListener('DOMContentLoaded', () => {
-  syncBodyTheme(); // Sync body theme with html theme
+  // Apply the initial theme, which is stored in the document body.
+  // We apply it to all elements, except the body itself.
+  const initialTheme = document.body.getAttribute('data-theme');
+  applyTheme(initialTheme, false);
+
   setupThemeToggleListener();
   initializeSidebarToggle();
   initializeTabs();
